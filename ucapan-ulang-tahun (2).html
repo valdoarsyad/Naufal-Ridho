@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Sayang ♡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: Montserrat, sans-serif; }
+    body { overflow-x: hidden; background: #fff7f3; color: #5c2935; }
+    button { font: inherit; cursor: pointer; border: 0; }
+
+    .screen {
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+      display: none;
+      overflow: hidden;
+    }
+    .screen.active { display: flex; }
+
+    /* 1. Opening */
+    #opening {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(255,148,176,.22), transparent 22%),
+        linear-gradient(135deg, #fffaf8, #fdf0ec);
+    }
+    .opening-inner { position: relative; z-index: 3; }
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: #9b6770;
+      margin-bottom: 28px;
+      animation: fadeUp 1s both;
+    }
+    .heart {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 35px;
+      position: relative;
+      transform: rotate(-45deg);
+      background: linear-gradient(145deg, #ff8fae, #df365f);
+      border-radius: 13px 0 13px 13px;
+      box-shadow: 0 18px 55px rgba(216,53,91,.35);
+      animation: heartbeat 1.8s infinite ease-in-out, fadeUp 1s .15s both;
+    }
+    .heart::before, .heart::after {
+      content: "";
+      position: absolute;
+      width: 92px;
+      height: 92px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { top: -46px; left: 0; }
+    .heart::after { left: 46px; top: 0; }
+    .heart span {
+      position: absolute;
+      z-index: 4;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.8);
+      top: 14px;
+      left: 57px;
+      transform: rotate(45deg);
+      filter: blur(1px);
+    }
+    .opening-title {
+      font-family: "DM Serif Display", serif;
+      font-size: clamp(38px, 7vw, 74px);
+      font-weight: 400;
+      margin: 0;
+      color: #662b39;
+      animation: fadeUp 1s .3s both;
+    }
+    .opening-sub {
+      margin: 12px 0 30px;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #9b6770;
+      animation: fadeUp 1s .45s both;
+    }
+    .pill {
+      padding: 13px 24px;
+      border-radius: 999px;
+      color: #fff;
+      background: #bd415d;
+      box-shadow: 0 10px 25px rgba(189,65,93,.25);
+      transition: .25s;
+      animation: fadeUp 1s .6s both;
+    }
+    .pill:hover { transform: translateY(-2px); background: #a93550; }
+    .hint { margin-top: 18px; font-size: 10px; letter-spacing: .2em; color: #b58a91; text-transform: uppercase; }
+
+    /* 2. Birthday hero */
+    #hero {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,188,199,.35), transparent 28%),
+        radial-gradient(circle at 80% 80%, rgba(114,12,44,.25), transparent 30%),
+        linear-gradient(120deg, #c92755, #ef4e68 48%, #b51d49);
+    }
+    #hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,.2) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: .22;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-small {
+      font-family: "DM Serif Display", serif;
+      font-style: italic;
+      font-size: 16px;
+      opacity: .9;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: "DM Serif Display", serif;
+      font-size: clamp(58px, 12vw, 145px);
+      line-height: .78;
+      margin: 0;
+      text-shadow: 0 5px 0 rgba(117,16,40,.12);
+    }
+    .hero-line {
+      width: 220px;
+      height: 3px;
+      margin: 30px auto 22px;
+      border-radius: 50%;
+      background: #ffd59a;
+      transform: rotate(-1deg);
+      position: relative;
+    }
+    .hero-line::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 3px;
+      background: #ffd59a;
+      top: 7px;
+      left: 30px;
+      border-radius: 50%;
+    }
+    .hero-caption { font-size: 11px; letter-spacing: .25em; text-transform: uppercase; opacity: .9; }
+    .skip {
+      position: absolute; bottom: 28px; right: 30px; z-index: 3;
+      background: rgba(255,255,255,.13); color: white; padding: 9px 15px; border-radius: 99px;
+      font-size: 10px; letter-spacing: .12em;
+    }
+
+    /* 3. Wishes / gallery */
+    #wishes {
+      display: block;
+      min-height: 100vh;
+      padding: 70px 20px 100px;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,189,206,.5), transparent 24%),
+        radial-gradient(circle at 90% 35%, rgba(255,214,175,.4), transparent 22%),
+        #fff8f4;
+    }
+    .topbar {
+      max-width: 1050px;
+      margin: 0 auto 35px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      font-family: "DM Serif Display", serif;
+      font-size: 24px;
+      color: #8c4052;
+    }
+    .brand small {
+      display: block;
+      font-family: Montserrat, sans-serif;
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #b78991;
+      margin-top: 3px;
+    }
+    .topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .music, .savebtn {
+      border: 1px solid #efcdd2;
+      color: #9b4a5d;
+      background: rgba(255,255,255,.75);
+      border-radius: 99px;
+      padding: 9px 14px;
+      font-size: 10px;
+    }
+    .savebtn { border-color: #e9b6c1; background: #fff0f3; font-weight: 600; }
+    .spotify-wrap {
+      max-width: 1050px;
+      margin: 0 auto 35px;
+    }
+    .spotify-caption {
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #aa6d77;
+      margin-bottom: 10px;
+    }
+    .gallery-wrap { max-width: 1050px; margin: auto; }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: #aa6d77;
+      margin-bottom: 12px;
+    }
+    .gallery-title {
+      font-family: "DM Serif Display", serif;
+      font-size: clamp(38px, 5vw, 62px);
+      font-weight: 400;
+      margin: 0 0 8px;
+      color: #6b2e3d;
+    }
+    .gallery-help {
+      font-size: 11px;
+      color: #a9727c;
+      margin-bottom: 25px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 620px;
+      margin: 0 auto 42px;
+    }
+    .photo {
+      aspect-ratio: 1/1.18;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(145deg, #f5c7d1, #f6ddc5);
+      box-shadow: 0 9px 22px rgba(108,44,61,.08);
+      transition: transform .35s, box-shadow .35s;
+      cursor: pointer;
+    }
+    .photo:hover { transform: translateY(-5px) rotate(.5deg); box-shadow: 0 18px 35px rgba(108,44,61,.16); }
+    .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .placeholder {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      text-align: center;
+      color: rgba(110,42,59,.75);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 15px;
+      border: 2px dashed rgba(110,42,59,.25);
+      border-radius: 12px;
+      margin: 4px;
+    }
+    .placeholder .plus { display: block; font-size: 22px; margin-bottom: 6px; font-family: "DM Serif Display", serif; }
+    .photo-edit {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: rgba(0,0,0,.45);
+      color: #fff;
+      font-size: 9px;
+      padding: 4px 8px;
+      border-radius: 99px;
+      letter-spacing: .05em;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .photo:hover .photo-edit { opacity: 1; }
+
+    /* Decorative flowers */
+    .flower-cloud { position: absolute; pointer-events: none; opacity: .75; }
+    .flower-cloud.left { left: -20px; top: 170px; transform: rotate(-15deg); }
+    .flower-cloud.right { right: -20px; top: 250px; transform: rotate(15deg); }
+    .flower {
+      width: 16px; height: 16px; position: relative; margin: 12px;
+      display: inline-block;
+      background: #f59ab4; border-radius: 50%;
+      box-shadow: 13px 0 #f7c2ce, 0 13px #e8789a, -13px 0 #f5b1c2, 0 -13px #f4d0d7;
+    }
+    .flower::after { content:""; position:absolute; width:7px; height:7px; background:#f6c85f; border-radius:50%; top:5px; left:5px; }
+
+    /* 4. Message */
+    .message-card {
+      max-width: 780px;
+      margin: 0 auto;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(224,175,185,.55);
+      border-radius: 18px;
+      padding: clamp(30px, 6vw, 65px);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(108,44,61,.1);
+      position: relative;
+    }
+    .message-card::before, .message-card::after {
+      content: "✿";
+      position: absolute;
+      font-size: 45px;
+      color: #e77b99;
+      opacity: .65;
+    }
+    .message-card::before { top: -20px; left: 28px; transform: rotate(-20deg); }
+    .message-card::after { bottom: -20px; right: 28px; transform: rotate(20deg); }
+    .message-small { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #b16b78; }
+    .message-title {
+      font-family: "DM Serif Display", serif;
+      font-size: clamp(30px, 5vw, 48px);
+      margin: 12px 0 25px;
+      color: #7d3045;
+    }
+    .message {
+      max-width: 600px;
+      margin: auto;
+      line-height: 2;
+      color: #79535d;
+      font-size: 13px;
+    }
+    .signature {
+      font-family: "DM Serif Display", serif;
+      font-style: italic;
+      font-size: 25px;
+      margin-top: 22px;
+      color: #8b3850;
+    }
+    .gift-btn { margin-top: 30px; }
+
+    /* modal */
+    #giftModal {
+      position: fixed; inset: 0; z-index: 50;
+      display: none; place-items: center;
+      padding: 20px;
+      background: rgba(75,22,37,.55);
+      backdrop-filter: blur(7px);
+    }
+    #giftModal.show { display: grid; }
+    .modal-card {
+      width: min(520px, 100%);
+      background: #fffaf8;
+      border-radius: 22px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 30px 90px rgba(0,0,0,.25);
+      animation: pop .45s both;
+    }
+    .modal-heart { font-size: 55px; animation: heartbeat 1.4s infinite; }
+    .modal-title { font-family: "DM Serif Display", serif; font-size: 36px; margin: 8px 0 15px; }
+    .modal-text { color: #76525b; line-height: 1.9; font-size: 13px; }
+    .close { margin-top: 22px; padding: 10px 20px; border-radius: 99px; background: #ead0d6; color: #7d3045; }
+
+    /* confetti/petals */
+    .petal {
+      position: fixed;
+      top: -30px;
+      width: 10px; height: 15px;
+      border-radius: 70% 30% 70% 30%;
+      pointer-events: none;
+      z-index: 20;
+      animation: fall linear forwards;
+      opacity: .85;
+    }
+
+    .fade-in { animation: fadeUp .9s both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    @keyframes heartbeat {
+      0%,100% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.1); }
+    }
+    @keyframes pop { from { opacity: 0; transform: scale(.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes fall {
+      0% { transform: translate3d(0,-20px,0) rotate(0deg); }
+      100% { transform: translate3d(var(--drift),110vh,0) rotate(620deg); }
+    }
+    @media (max-width: 650px) {
+      .gallery { gap: 7px; }
+      .topbar { margin-bottom: 25px; }
+      .message { font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HALAMAN 1 -->
+  <section id="opening" class="screen active">
+    <div class="opening-inner">
+      <div class="eyebrow"></div>
+      <div class="heart"><span></span></div>
+      <h1 class="opening-title">For Someone Special Yayaa</h1>
+      <div class="opening-sub">made with a little love from lino</div>
+      <button class="pill" onclick="startExperience()">Open this ♡</button>
+      <div class="hint">tap the button</div>
+    </div>
+  </section>
+
+  <!-- HALAMAN 2 -->
+  <section id="hero" class="screen">
+    <div class="hero-content">
+      <div class="hero-small">make a wish...</div>
+      <h1 class="hero-title">Happy<br>Birthday</h1>
+      <div class="hero-line"></div>
+      <div class="hero-caption">Raden Fathya Latifa</div>
+      <button class="pill" style="margin-top:32px" onclick="showWishes()">Continue ♡</button>
+    </div>
+    <button class="skip" onclick="showWishes()">skip intro</button>
+  </section>
+
+  <!-- HALAMAN 3 -->
+  <section id="wishes" class="screen">
+    <div class="flower-cloud left">
+      <span class="flower"></span><span class="flower"></span><span class="flower"></span>
+    </div>
+    <div class="flower-cloud right">
+      <span class="flower"></span><span class="flower"></span><span class="flower"></span>
+    </div>
+
+    <div class="topbar">
+      <div class="brand">Blooming Wishes <small>for my favorite person</small></div>
+      <div class="topbar-actions">
+        <button class="savebtn" onclick="downloadPage()">💾 Simpan halaman + foto</button>
+      </div>
+    </div>
+
+    <div class="spotify-wrap fade-in">
+      <div class="spotify-caption">now playing — seasons, wave to earth</div>
+      <iframe style="border-radius:14px" src="https://open.spotify.com/embed/track/5VBjyOQzqlPNgdRPMM6prF?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <main class="gallery-wrap">
+      <div class="section-label">Beautiful Memories</div>
+      <h2 class="gallery-title">Always Beautiful in every photo.</h2>
+      <div class="gallery-help">Klik kotak di bawah untuk upload foto dari HP/laptop kamu. Setelah semua foto masuk, klik tombol "Simpan halaman + foto" di atas untuk download file HTML final (foto sudah tertanam, bisa langsung dikirim/dihost).</div>
+
+      <div class="gallery" id="gallery">
+        <div class="photo" onclick="triggerUpload(1)">
+          <img id="img1" alt="Memory 1" style="display:none">
+          <div class="placeholder" id="ph1"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(2)">
+          <img id="img2" alt="Memory 2" style="display:none">
+          <div class="placeholder" id="ph2"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(3)">
+          <img id="img3" alt="Memory 3" style="display:none">
+          <div class="placeholder" id="ph3"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(4)">
+          <img id="img4" alt="Memory 4" style="display:none">
+          <div class="placeholder" id="ph4"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(5)">
+          <img id="img5" alt="Memory 5" style="display:none">
+          <div class="placeholder" id="ph5"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(6)">
+          <img id="img6" alt="Memory 6" style="display:none">
+          <div class="placeholder" id="ph6"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(7)">
+          <img id="img7" alt="Memory 7" style="display:none">
+          <div class="placeholder" id="ph7"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(8)">
+          <img id="img8" alt="Memory 8" style="display:none">
+          <div class="placeholder" id="ph8"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+        <div class="photo" onclick="triggerUpload(9)">
+          <img id="img9" alt="Memory 9" style="display:none">
+          <div class="placeholder" id="ph9"><span class="plus">+</span>Tambah Foto</div>
+          <div class="photo-edit">ganti foto</div>
+        </div>
+      </div>
+
+      <article class="message-card fade-in">
+        <div class="message-small">♡ A Message For You ♡</div>
+        <h2 class="message-title">Happy Birthday Sayangg</h2>
+        <p class="message">
+          Semoga di usia yang baru ini, hal-hal baik selalu beriringan denganmu,
+          Semoga semesta senantiasa berpihak padamu, punya banyak alasan untuk tersenyum,
+          dan semua langkah yang kamu pilih membawa kamu lebih dekat dengan hal-hal yang kamu impikan. 
+          <br><br>
+          Untuk segala hal yang aku ucapin sekarang, hal yang terpenting dan utama adalah terimakasih. Terimakasih udah lahir ke dunia dan menjadi gadis lucu, pintar, baik hati, dan cantik pastinya
+          I hope you know how special you are to me.
+        </p>
+        <div class="signature">— Naufal Ridho Pramudya Arsyad —</div>
+        <button class="pill gift-btn" onclick="openGift()">Send a Gift ♡</button>
+      </article>
+    </main>
+  </section>
+
+  <!-- MODAL -->
+  <div id="giftModal">
+    <div class="modal-card">
+      <div class="modal-heart">♡</div>
+      <div class="message-small">one last thing...</div>
+      <h2 class="modal-title">You are my favorite part.</h2>
+      <p class="modal-text">
+        Semoga hari ulang tahunmu seindah senyum kamu
+        Keep growing, keep dreaming, and keep being you.
+        <br><br>
+        <b>Happy Birthday, my favorite person Raden Fathya Latifa 🤍</b>
+      </p>
+      <button class="close" onclick="closeGift()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    let audioCtx = null;
+    let musicOn = false;
+    let timer = null;
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startExperience() {
+      playChime();
+      showScreen('hero');
+      setTimeout(() => petals(18), 250);
+    }
+
+    function showWishes() {
+      playChime();
+      showScreen('wishes');
+      petals(35);
+    }
+
+    function openGift() {
+      document.getElementById('giftModal').classList.add('show');
+      petals(45);
+      playChime();
+    }
+
+    function closeGift() {
+      document.getElementById('giftModal').classList.remove('show');
+    }
+
+    document.getElementById('giftModal').addEventListener('click', e => {
+      if (e.target.id === 'giftModal') closeGift();
+    });
+
+    function petals(count = 20) {
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.setProperty('--drift', (Math.random() * 220 - 110) + 'px');
+        p.style.animationDuration = (4 + Math.random() * 5) + 's';
+        p.style.animationDelay = (Math.random() * .8) + 's';
+        p.style.background = ['#f08aa8','#f6b7c7','#e76f93','#ffd08b','#f3d1d8'][Math.floor(Math.random()*5)];
+        p.style.transform = `rotate(${Math.random()*180}deg)`;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 10000);
+      }
+    }
+
+    // Bunyi sederhana tanpa file musik, sehingga website tetap jalan offline.
+    function playChime() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        [523.25, 659.25, 783.99].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.frequency.value = freq;
+          osc.type = 'sine';
+          gain.gain.setValueAtTime(0.0001, now + i*.09);
+          gain.gain.exponentialRampToValueAtTime(.08, now + i*.09 + .02);
+          gain.gain.exponentialRampToValueAtTime(.0001, now + i*.09 + .55);
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(now + i*.09);
+          osc.stop(now + i*.09 + .6);
+        });
+      } catch(e) {}
+    }
+
+    function toggleMusic() {
+      musicOn = !musicOn;
+      const btn = document.getElementById('musicBtn');
+      btn.textContent = musicOn ? '♫ Sound on' : '♫ Sound off';
+      if (musicOn) {
+        playChime();
+        timer = setInterval(playChime, 7000);
+      } else {
+        clearInterval(timer);
+      }
+    }
+
+    // ==== UPLOAD FOTO ====
+    function triggerUpload(idx) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 6 * 1024 * 1024) {
+          alert('Ukuran foto terlalu besar (maks 6MB). Coba pilih foto lain atau kompres dulu.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = document.getElementById('img' + idx);
+          const ph = document.getElementById('ph' + idx);
+          img.src = ev.target.result;
+          img.style.display = 'block';
+          ph.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      };
+      input.click();
+    }
+
+    // Download halaman ini lengkap dengan foto yang sudah diupload (base64 tertanam)
+    function downloadPage() {
+      const clone = document.documentElement.cloneNode(true);
+      const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ucapan-ulang-tahun.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
